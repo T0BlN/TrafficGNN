@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 
+#code to show the prediction vs actual ETA plot
+
 def visualize_results(pred, actual, test_mask):
     pred = pred[test_mask].cpu().numpy()
     actual = actual[test_mask].cpu().numpy()

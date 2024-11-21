@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
+#code to display the node graph. Rounds decimals for veiwing purposes
+
 def visualize_graph(graph, round_decimals=2):
     pos = nx.spring_layout(graph)
 
