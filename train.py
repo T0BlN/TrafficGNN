@@ -14,7 +14,6 @@ def train_model(model, data, train_mask, optimizer, epochs=100):
         if (epoch + 1) % 10 == 0:
             print(f"Epoch {epoch + 1}, Loss: {loss.item()}")
 
-
 def test_model(model, data, test_mask):
     model.eval()
     with torch.no_grad():
@@ -22,8 +21,8 @@ def test_model(model, data, test_mask):
         pred = pred.squeeze()
         loss = F.mse_loss(pred[test_mask], data.edge_attr[test_mask].squeeze())
 
-        print("Test Loss:", loss.item())
-        print("Sample predictions:", pred[test_mask][:5].cpu().numpy())
-        print("Sample actual values:", data.edge_attr[test_mask][:5].cpu().numpy())
+        # print("Test Loss:", loss.item())
+        # print("Sample predictions:", pred[test_mask][:5].cpu().numpy())
+        # print("Sample actual values:", data.edge_attr[test_mask][:5].cpu().numpy())
 
         return pred, loss
