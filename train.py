@@ -14,7 +14,6 @@ def train_model(model, data, train_mask, optimizer, epochs=100):
         if (epoch + 1) % 10 == 0:
             print(f"Epoch {epoch + 1}, Loss: {loss.item()}")
 
-
 def test_model(model, data, test_mask):
     model.eval()
     with torch.no_grad():

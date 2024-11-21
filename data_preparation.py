@@ -1,6 +1,7 @@
 from torch_geometric.utils import from_networkx
 import torch
 import random
+import networkx as nx
 
 def create_graph():
     import networkx as nx
@@ -24,7 +25,6 @@ def create_graph():
 
     degrees = [graph.degree(n) for n in graph.nodes]
     avg_speeds = [sum(data['speed'] for _, _, data in graph.edges(n, data=True)) / graph.degree(n) for n in graph.nodes]
-
     data.x = torch.tensor([[degrees[n], avg_speeds[n]] for n in graph.nodes], dtype=torch.float)
 
     edge_attrs = []
@@ -41,4 +41,4 @@ def create_graph():
     print(f"  Number of edges: {len(edge_attrs)}")
     print("  Sample edge attributes (ETA):", edge_attrs[:5])
 
-    return data
+    return data, graph
