@@ -7,13 +7,23 @@ class TrafficGNN(torch.nn.Module):
         super(TrafficGNN, self).__init__()
         self.conv1 = GCNConv(node_in_channels, hidden_channels)
         self.conv2 = GCNConv(hidden_channels, hidden_channels)
-        self.edge_fc = torch.nn.Linear(hidden_channels * 2 + edge_in_channels, out_channels)
+        self.conv3 = GCNConv(hidden_channels, hidden_channels)
+        self.dropout = torch.nn.Dropout(p=0.3)
+        
+        self.edge_fc = torch.nn.Sequential(
+            torch.nn.Linear(hidden_channels * 2 + edge_in_channels, hidden_channels),
+            torch.nn.ReLU(),
+            torch.nn.Linear(hidden_channels, out_channels)
+        )
 
     def forward(self, x, edge_index, edge_attr):
         x = self.conv1(x, edge_index)
         x = F.relu(x)
         x = self.conv2(x, edge_index)
         x = F.relu(x)
+        x = self.conv3(x, edge_index)
+        x = F.relu(x)
+        x = self.dropout(x)
 
         src, dest = edge_index
         edge_features = torch.cat([x[src], x[dest], edge_attr], dim=1)
