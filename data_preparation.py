@@ -34,11 +34,11 @@ def create_graph():
         edge_attrs.append(edge_data['eta'])
     data.edge_attr = torch.tensor(edge_attrs, dtype=torch.float).view(-1, 1)
 
-    print("Aligned edge attributes (data.edge_attr.size):", data.edge_attr.size())
-    print("Edge index shape after alignment:", data.edge_index.size())
-    print("Graph created with:")
-    print(f"  Number of nodes: {num_nodes}")
-    print(f"  Number of edges: {len(edge_attrs)}")
-    print("  Sample edge attributes (ETA):", edge_attrs[:5])
+    # print("Aligned edge attributes (data.edge_attr.size):", data.edge_attr.size())
+    # print("Edge index shape after alignment:", data.edge_index.size())
+    # print("Graph created with:")
+    # print(f"  Number of nodes: {num_nodes}")
+    # print(f"  Number of edges: {len(edge_attrs)}")
+    # print("  Sample edge attributes (ETA):", edge_attrs[:5])
 
     return data, graph
