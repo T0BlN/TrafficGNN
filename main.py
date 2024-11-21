@@ -4,22 +4,31 @@ from train import train_model, test_model
 from visualize import visualize_results
 import torch
 
-# Prepare data
 data = create_graph()
-num_edges = data.edge_index.size(1)
+num_edges = data.edge_attr.size(0)
 
-train_mask = torch.randperm(num_edges)[:int(0.8 * num_edges)]
-test_mask = torch.randperm(num_edges)[int(0.8 * num_edges):]
-data.train_mask = train_mask
-data.test_mask = test_mask
+perm = torch.randperm(num_edges)
+train_mask = perm[:int(0.6 * num_edges)]
+test_mask = perm[int(0.6 * num_edges):]
 
-# Define model and optimizer
-model = TrafficGNN(data.x.size(1), 16, 1)
+print("Train mask indices:", train_mask)
+print("Test mask indices:", test_mask)
+print("Max index in train mask:", train_mask.max())
+print("Max index in test mask:", test_mask.max())
+
+model = TrafficGNN(
+    node_in_channels=data.x.size(1), 
+    edge_in_channels=data.edge_attr.size(1), 
+    hidden_channels=16, 
+    out_channels=1
+)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
 
-# Train and test the model
 train_model(model, data, train_mask, optimizer, epochs=100)
-pred = test_model(model, data, test_mask)
+pred, loss = test_model(model, data, test_mask)
 
-# Visualize results
-visualize_results(pred[test_mask].cpu().numpy(), data.edge_attr[test_mask].cpu().numpy())
+visualize_results(pred, data.edge_attr, test_mask)
+
+
+
+#Run python "python main.py" to generate the prediction graph
